@@ -134,7 +134,7 @@ def process_specific_question(doc_id, question):
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
     # Combine the json_data into a single text
-    document_text = "\n".join(document.get("json_data", []))
+    document_text = "\n".join([item for sublist in document.get("json_data", []) for item in sublist.values()])
     # Generate the OpenAI response
     prompt = f"Document text:\n{document_text}\n\nQuestion: {question}\n\nAnswer (provide a precise and concise response without restating the question):"
     response = get_openai_response(prompt)
