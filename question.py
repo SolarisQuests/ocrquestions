@@ -109,7 +109,7 @@ mongo_url = os.getenv("MONGODB_API_KEY")
 # Connect to MongoDB
 client = MongoClient(mongo_url)
 db = client["Documenttask"]
-images_collection = db["images"]
+images_collection = db["imagesdemo"]
 # Function to get response from OpenAI
 def get_openai_response(prompt):
     response = openai.ChatCompletion.create(
