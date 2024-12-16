@@ -30,20 +30,17 @@ images_collection = db["imagesdemo"]
 questions_collection = db["Common_questions"]
 
 async def get_openai_response(prompt: str) -> str:
-    try:
-        response = await openai.ChatCompletion.acreate(
-            model="gpt-4",  # Use the latest available model
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant. Always provide concise answers without restating the question. Date as YYYYMMDD format. Names as Last Name,First Name Middle Name format."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=1500,
-        )
-        return response.choices[0].message['content'].strip()
-    except openai.error.OpenAIError as e:
-        print(f"Error in OpenAI API call: {e}")
-        return f"Error: {e}"
 
+    response = await openai.ChatCompletion.acreate(
+        model="gpt-4",  # Use the latest available model
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant. Always provide concise answers without restating the question. Date as YYYYMMDD format. Names as Last Name,First Name Middle Name format."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=1500,
+    )
+    return response.choices[0].message['content'].strip()
+    
 
 async def process_specific_question(doc_id: str, question: str):
     try:
