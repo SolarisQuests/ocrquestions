@@ -1,5 +1,5 @@
 fastapi
 uvicorn
-openai==0.28
-pymongo
+openai
+motor
 python-dotenv
