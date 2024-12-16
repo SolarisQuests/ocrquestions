@@ -1,5 +1,8 @@
 fastapi
 uvicorn
-motor
-python-dotenv
 openai==0.28
+python-dotenv
+motor
+pydantic
+pydantic-settings
+slowapi
