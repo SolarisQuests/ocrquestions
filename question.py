@@ -77,29 +77,23 @@ async def process_specific_question(doc_id: str, question: str):
     print(f"Processed document: {document['_id']} with new question: {question}")
     return response
 
-async def process_all_documents(question: str):
+ async def process_all_documents(question: str):
     cursor = images_collection.find()
     documents = await cursor.to_list(length=None)
-    
     if not documents:
         raise HTTPException(status_code=404, detail="No documents found in the collection")
-
-    responses = []
+    responses = ''
     for document in documents:
         document_text = "\n".join([item for sublist in document.get("json_data", []) for item in sublist.values()])
-        
-        # generate the OpenAI response
+        # llm
         prompt = f"Document text:\n{document_text}\n\nQuestion: {question}\n\nAnswer (provide a precise and concise response without restating the question):"
         response = await get_openai_response(prompt)
-        
-        # save in db
-        await questions_collection.insert_one({
-            "question": question,
-            "response": response,
-            "question_asked_time": datetime.utcnow()
-        })
-        responses.append(response)
-    
+        responses+=response
+    await questions_collection.insert_one({
+        "question": question,
+        "responses": responses,
+        "question_asked_time": datetime.utcnow()
+    })
     return responses
 
 @app.get("/")
